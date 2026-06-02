@@ -1,16 +1,26 @@
 import { Link } from "react-router-dom";
+import {
+  getWallpaperAltText,
+  getWallpaperPath,
+  getWallpaperTitle,
+} from "../utils/wallpaperSeo.js";
 
-function WallpaperCard({ wallpaper }) {
-  const title =
-    wallpaper.alt || wallpaper.photographer || `Wallpaper ${wallpaper.id}`;
+function WallpaperCard({ wallpaper, priority = false }) {
+  const title = getWallpaperTitle(wallpaper);
+  const wallpaperPath = getWallpaperPath(wallpaper);
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-      <Link to={`/wallpapers/${wallpaper.id}`}>
+    <article className="group overflow-hidden rounded-[1.75rem] border border-zinc-200 bg-white/90 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+      <Link to={wallpaperPath} aria-label={`Open ${title} details`}>
         <img
           src={wallpaper.src?.medium}
-          alt={title}
-          className="h-64 w-full object-cover"
+          alt={getWallpaperAltText(wallpaper)}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : "low"}
+          width={wallpaper.width || 800}
+          height={wallpaper.height || 1000}
+          className="aspect-[4/5] h-auto w-full object-cover transition duration-500 group-hover:scale-[1.03]"
         />
       </Link>
 
@@ -23,12 +33,12 @@ function WallpaperCard({ wallpaper }) {
           Photographer: {wallpaper.photographer || "Unknown"}
         </p>
 
-        <button
-          type="button"
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700"
+        <Link
+          to={wallpaperPath}
+          className="inline-flex rounded-full  bg-zinc-100 dark:bg-zinc-100 dark:bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700"
         >
-          Save
-        </button>
+          View details
+        </Link>
       </div>
     </article>
   );

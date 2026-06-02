@@ -1,37 +1,29 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 function usePagination(items = [], itemsPerPage = 8) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const safeItems = useMemo(() => (Array.isArray(items) ? items : []), [items]);
+  const [requestedPage, setRequestedPage] = useState(1);
 
-  const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [items, itemsPerPage]);
-
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
-  }, [currentPage, totalPages]);
+  const totalPages = Math.max(1, Math.ceil(safeItems.length / itemsPerPage));
+  const currentPage = Math.min(requestedPage, totalPages);
 
   const paginatedItems = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return items.slice(startIndex, endIndex);
-  }, [currentPage, items, itemsPerPage]);
+    return safeItems.slice(startIndex, endIndex);
+  }, [currentPage, safeItems, itemsPerPage]);
 
   function goToPage(page) {
     const nextPage = Math.min(Math.max(page, 1), totalPages);
-    setCurrentPage(nextPage);
+    setRequestedPage(nextPage);
   }
 
   function nextPage() {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    setRequestedPage((prevPage) => Math.min(prevPage + 1, totalPages));
   }
 
   function previousPage() {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setRequestedPage((prevPage) => Math.max(prevPage - 1, 1));
   }
 
   return {
