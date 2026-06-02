@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import WallpaperSummaryCard from "../../components/wallpaper/WallpaperSummaryCard";
+import WallpaperSummaryCard from "../../features/wallpapers/components/WallpaperSummaryCard";
 
 function WallpaperDetailsPage() {
   const { wallpaperId } = useParams();
