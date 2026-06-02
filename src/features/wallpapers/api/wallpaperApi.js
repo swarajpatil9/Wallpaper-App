@@ -1,8 +1,15 @@
-const PEXELS_API_KEY = import.meta.env.VITE_PEXELS_API_KEY;
+import axiosInstance from "../../../services/axiosInstance.js";
+import { PEXELS_ENDPOINTS } from "../constants/pexelsEndpoints.js";
 
 export const wallpaperApi = {
-  getWallpapers: () => {},
+  async getWallpapers(page = 1, perPage = 20) {
+    const response = await axiosInstance.get(PEXELS_ENDPOINTS.CURATED, {
+      params: {
+        page,
+        per_page: perPage,
+      },
+    });
 
-  searchWallpapers: () => {},
-
-  getWallpaperById: () => {},
+    return response.data;
+  },
+};
