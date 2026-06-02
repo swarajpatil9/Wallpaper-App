@@ -1,22 +1,50 @@
 import WallpaperCard from "./WallpaperCard";
+import WallpaperEmptyState from "./WallpaperEmptyState";
+import WallpaperErrorState from "./WallpaperErrorState";
+import WallpaperSkeletonGrid from "./WallpaperSkeletonGrid";
 
-function WallpaperGrid({ wallpapers, loading, error }) {
+function WallpaperGrid({
+  wallpapers,
+  loading,
+  error,
+  onRetry,
+  emptyTitle,
+  emptyDescription,
+}) {
   if (loading) {
-    return <p className="text-sm text-zinc-600">Loading wallpapers...</p>;
+    return <WallpaperSkeletonGrid />;
   }
 
   if (error) {
-    return <p className="text-sm text-red-600">Failed to load: {error}</p>;
+    return (
+      <WallpaperErrorState
+        title="Wallpapers could not be loaded"
+        message={error}
+        onRetry={onRetry}
+      />
+    );
   }
 
   if (!wallpapers.length) {
-    return <p className="text-sm text-zinc-600">No wallpapers found.</p>;
+    return (
+      <WallpaperEmptyState
+        title={emptyTitle || "No wallpapers matched this view"}
+        description={
+          emptyDescription ||
+          "Try a broader search term, switch collections, or clear the current filters to see more results."
+        }
+      />
+    );
   }
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {wallpapers.map((wallpaper) => (
-        <WallpaperCard key={wallpaper.id} wallpaper={wallpaper} />
+      {wallpapers.map((wallpaper, index) => (
+        <WallpaperCard
+          key={wallpaper.id}
+          wallpaper={wallpaper}
+          priority={index < 4}
+        />
       ))}
     </div>
   );
