@@ -1,11 +1,6 @@
-import {
-  useCallback,
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { wallpaperApi } from "../api/wallpaperApi.js";
+import useDebounce from "../../../hooks/useDebounce.js";
 
 function useWallpapers({ seedQuery = "", perPage = 24 } = {}) {
   const [allWallpapers, setAllWallpapers] = useState([]);
@@ -15,17 +10,17 @@ function useWallpapers({ seedQuery = "", perPage = 24 } = {}) {
 
   const [search, setSearch] = useState(seedQuery);
   const [sort, setSort] = useState("curated");
-  const deferredSearch = useDeferredValue(search);
+  const debouncedSearch = useDebounce(search, 500);
 
   const normalizedQuery = useMemo(() => {
-    const trimmedSearch = deferredSearch.trim();
+    const trimmedSearch = debouncedSearch.trim();
 
     if (trimmedSearch) {
       return trimmedSearch;
     }
 
     return seedQuery.trim();
-  }, [deferredSearch, seedQuery]);
+  }, [debouncedSearch, seedQuery]);
 
   const retry = useCallback(() => {
     setRequestKey((currentKey) => currentKey + 1);
