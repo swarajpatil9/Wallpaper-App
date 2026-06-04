@@ -4,7 +4,6 @@ import SortDropdown from "../../features/wallpapers/components/SortDropdown";
 import WallpaperGrid from "../../features/wallpapers/components/WallpaperGrid";
 import { findDiscoveryEntry } from "../../features/wallpapers/constants/discoveryRoutes.js";
 import useDocumentMetadata from "../../features/wallpapers/hooks/useDocumentMetadata.js";
-import usePagination from "../../features/wallpapers/hooks/usePagination";
 import useWallpapers from "../../features/wallpapers/hooks/useWallpapers";
 import { getListingMetadata } from "../../features/wallpapers/utils/wallpaperSeo.js";
 import { useMemo } from "react";
@@ -21,6 +20,11 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
     sort,
     setSort,
     totalItems,
+    currentPage,
+    totalPages,
+    goToPage,
+    nextPage,
+    previousPage,
   } = useWallpapers({
     seedQuery: discoveryEntry?.query || "",
     perPage: 24,
@@ -41,15 +45,6 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
         ? `/topics/${tagSlug}`
         : "/",
   });
-
-  const {
-    currentPage,
-    totalPages,
-    paginatedItems,
-    goToPage,
-    nextPage,
-    previousPage,
-  } = usePagination(wallpapers, 8);
 
   const pageHeading = discoveryEntry?.label
     ? `${discoveryEntry.label} wallpapers`
@@ -80,7 +75,7 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
 
       <div>
         <WallpaperGrid
-          wallpapers={paginatedItems}
+          wallpapers={wallpapers}
           loading={loading}
           error={error}
           onRetry={retry}

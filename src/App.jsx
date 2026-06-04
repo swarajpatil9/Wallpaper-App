@@ -3,6 +3,8 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import RouteFallback from "./components/common/RouteFallback";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
+import CategoriesPage from "./pages/Categories/CategoriesPage";
+import CategoryDetailsPage from "./pages/Categories/CategoryDetailsPage";
 
 const DashboardPage = lazy(() => import("./pages/Home/DashboardPage"));
 const HomePage = lazy(() => import("./pages/Home/HomePage"));
@@ -63,6 +65,8 @@ function App() {
             <Route path="/sign-up/*" element={<SignUpPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/verify-email/*" element={<VerifyEmailPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/categories/:slug" element={<CategoryDetailsPage />} />
             <Route
               path="/wallpapers/:wallpaperId"
               element={<WallpaperDetailsPage />}

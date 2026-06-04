@@ -48,6 +48,7 @@ function Navbar() {
                 >
                   Create account
                 </Link>
+                <Link to="/categories">Categories</Link>
               </div>
             ) : null}
           </SignedOut>
