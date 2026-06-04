@@ -3,6 +3,8 @@ import WallpaperErrorState from "../../features/wallpapers/components/WallpaperE
 import WallpaperSkeletonGrid from "../../features/wallpapers/components/WallpaperSkeletonGrid";
 import useDocumentMetadata from "../../features/wallpapers/hooks/useDocumentMetadata.js";
 import useWallpaperDetails from "../../features/wallpapers/hooks/useWallpaperDetails.js";
+import useDownloadHistory from "../../features/wallpapers/hooks/useDownloadHistory.js";
+import useFavourites from "../../features/favourites/hooks/useFavourites.js";
 import WallpaperSummaryCard from "../../features/wallpapers/components/WallpaperSummaryCard";
 import { parseWallpaperId } from "../../features/wallpapers/utils/slugify.js";
 import {
@@ -16,6 +18,8 @@ function WallpaperDetailsPage() {
   const { wallpaperId } = useParams();
   const photoId = parseWallpaperId(wallpaperId);
   const { wallpaper, loading, error, retry } = useWallpaperDetails(photoId);
+  const { isFavourite, toggleFavourite } = useFavourites();
+  const { recordDownload } = useDownloadHistory();
 
   const metadata = wallpaper
     ? getWallpaperMetadata(wallpaper)
@@ -74,6 +78,7 @@ function WallpaperDetailsPage() {
   const downloadUrl =
     wallpaper.src?.original || wallpaper.src?.large2x || wallpaper.src?.large;
   const title = getWallpaperTitle(wallpaper);
+  const favourited = isFavourite(wallpaper);
 
   return (
     <section className="grid gap-6 py-8 sm:py-12 lg:grid-cols-[1.15fr_0.85fr]">
@@ -111,10 +116,22 @@ function WallpaperDetailsPage() {
               href={downloadUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={() => recordDownload(wallpaper)}
               className="rounded-full bg-amber-400 px-5 py-3 text-sm font-semibold text-black transition hover:bg-amber-300"
             >
               Download original
             </a>
+            <button
+              type="button"
+              onClick={() => toggleFavourite(wallpaper)}
+              className={
+                favourited
+                  ? "rounded-full bg-rose-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-400"
+                  : "rounded-full border border-zinc-300 dark:border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-100 transition hover:border-rose-400 hover:text-rose-500"
+              }
+            >
+              {favourited ? "♥ Saved" : "♡ Save"}
+            </button>
             <Link
               to="/"
               className="rounded-full border border-zinc-300 dark:border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-100 transition hover:border-zinc-500 hover:text-white"
