@@ -23,7 +23,7 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
     totalItems,
   } = useWallpapers({
     seedQuery: discoveryEntry?.query || "",
-    perPage: 24,
+    perPage: 850,
   });
 
   const listingMetadata = getListingMetadata({
