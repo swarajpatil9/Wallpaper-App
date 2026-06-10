@@ -1,18 +1,13 @@
 import { useUser } from "@clerk/clerk-react";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import useFavoriteWallpapers from "../../features/wallpapers/hooks/useFavoriteWallpapers.js";
 import {
   getWallpaperPath,
   getWallpaperTitle,
 } from "../../features/wallpapers/utils/wallpaperSeo.js";
 
 const STORAGE_KEYS = {
-  favorites: [
-    "favorite-wallpapers",
-    "favourite-wallpapers",
-    "favorites",
-    "favourites",
-  ],
   downloads: ["downloaded-wallpapers", "downloads", "download-history"],
 };
 
@@ -64,7 +59,7 @@ function normalizeWallpaper(item, index) {
   };
 }
 
-function SavedWallpapersSection({ title, items, emptyMessage }) {
+function SavedWallpapersSection({ title, items, emptyMessage, renderAction }) {
   return (
     <section className="glass-panel rounded-[2rem] p-6 sm:p-8">
       <div className="flex items-center justify-between">
@@ -122,6 +117,7 @@ function SavedWallpapersSection({ title, items, emptyMessage }) {
                       Open wallpaper
                     </Link>
                   ) : null}
+                  {renderAction ? renderAction(wallpaper, index) : null}
                 </div>
               </article>
             );
@@ -134,20 +130,8 @@ function SavedWallpapersSection({ title, items, emptyMessage }) {
 
 function DashboardPage() {
   const { isLoaded, user } = useUser();
-
-  const favoriteWallpapers = useMemo(() => {
-    const fromMetadata =
-      user?.publicMetadata?.favoriteWallpapers ||
-      user?.publicMetadata?.favouriteWallpapers ||
-      user?.unsafeMetadata?.favoriteWallpapers ||
-      user?.unsafeMetadata?.favouriteWallpapers;
-
-    const source = Array.isArray(fromMetadata)
-      ? fromMetadata
-      : readFirstStorageArray(STORAGE_KEYS.favorites);
-
-    return source.map(normalizeWallpaper).filter(Boolean);
-  }, [user]);
+  const { favorites: favoriteWallpapers, toggleFavorite } =
+    useFavoriteWallpapers();
 
   const downloadedWallpapers = useMemo(() => {
     const fromMetadata =
@@ -223,6 +207,15 @@ function DashboardPage() {
         title="Favourite wallpapers"
         items={favoriteWallpapers}
         emptyMessage="You do not have any favourite wallpapers yet. Add some from the gallery and they will appear here."
+        renderAction={(wallpaper) => (
+          <button
+            type="button"
+            onClick={() => toggleFavorite(wallpaper)}
+            className="inline-flex text-sm font-semibold text-rose-600 transition hover:text-rose-500 dark:text-rose-300 dark:hover:text-rose-200"
+          >
+            Remove favourite
+          </button>
+        )}
       />
 
       <SavedWallpapersSection

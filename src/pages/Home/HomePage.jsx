@@ -65,14 +65,14 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
 
   return (
     <section className="space-y-8 px-6 py-8">
-      <div className="rounded-[2rem] border border-zinc-200 bg-white/85 p-8 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-600">
+      <div className="rounded-[2rem] border border-zinc-200 bg-white/85 p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/80">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-600 dark:text-amber-300">
           Discover
         </p>
-        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white sm:text-4xl">
           {pageHeading}
         </h1>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-zinc-600 sm:text-base">
+        <p className="mt-4 max-w-3xl text-sm leading-7 text-zinc-600 dark:text-zinc-200 sm:text-base">
           {pageIntro}
         </p>
 
@@ -83,7 +83,7 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
       </div>
       <div className="mt-6 space-y-4">
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-200">
             Categories
           </p>
           <div className="flex flex-wrap gap-2">
@@ -95,8 +95,8 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
                   [
                     "rounded-full px-3 py-1.5 text-xs font-semibold transition",
                     isActive
-                      ? "bg-zinc-900 text-white"
-                      : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200",
+                      ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950"
+                      : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700",
                   ].join(" ")
                 }
               >
@@ -107,7 +107,7 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
         </div>
 
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-200">
             Tags
           </p>
           <div className="flex flex-wrap gap-2">
@@ -119,8 +119,8 @@ function HomePageContent({ categorySlug, discoveryEntry, tagSlug }) {
                   [
                     "rounded-full px-3 py-1.5 text-xs font-semibold transition",
                     isActive
-                      ? "bg-amber-500 text-black"
-                      : "bg-amber-50 text-amber-700 hover:bg-amber-100",
+                      ? "bg-amber-500 text-black dark:bg-amber-300 dark:text-zinc-900"
+                      : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-500/15 dark:text-amber-200 dark:hover:bg-amber-500/25",
                   ].join(" ")
                 }
               >

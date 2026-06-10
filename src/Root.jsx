@@ -16,7 +16,7 @@ function Root() {
   return (
     <ClerkProvider
       publishableKey={clerkPublishableKey}
-      afterSignOutUrl="/"
+      afterSignOutUrl="/sign-in"
       appearance={getClerkAppearance(theme)}
     >
       <BrowserRouter>

@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import WallpaperErrorState from "../../features/wallpapers/components/WallpaperErrorState";
 import WallpaperSkeletonGrid from "../../features/wallpapers/components/WallpaperSkeletonGrid";
 import useDocumentMetadata from "../../features/wallpapers/hooks/useDocumentMetadata.js";
+import useFavoriteWallpapers from "../../features/wallpapers/hooks/useFavoriteWallpapers.js";
 import useWallpaperDetails from "../../features/wallpapers/hooks/useWallpaperDetails.js";
 import WallpaperSummaryCard from "../../features/wallpapers/components/WallpaperSummaryCard";
 import { parseWallpaperId } from "../../features/wallpapers/utils/slugify.js";
@@ -14,6 +15,7 @@ import {
 
 function WallpaperDetailsPage() {
   const { wallpaperId } = useParams();
+  const { isFavorite, toggleFavorite } = useFavoriteWallpapers();
   const photoId = parseWallpaperId(wallpaperId);
   const { wallpaper, loading, error, retry } = useWallpaperDetails(photoId);
 
@@ -74,6 +76,7 @@ function WallpaperDetailsPage() {
   const downloadUrl =
     wallpaper.src?.original || wallpaper.src?.large2x || wallpaper.src?.large;
   const title = getWallpaperTitle(wallpaper);
+  const favoriteActive = isFavorite(wallpaper.id);
 
   return (
     <section className="grid gap-6 py-8 sm:py-12 lg:grid-cols-[1.15fr_0.85fr]">
@@ -121,6 +124,19 @@ function WallpaperDetailsPage() {
             >
               Back to gallery
             </Link>
+            <button
+              type="button"
+              onClick={() => toggleFavorite(wallpaper)}
+              aria-pressed={favoriteActive}
+              className={[
+                "rounded-full border px-5 py-3 text-sm font-semibold transition",
+                favoriteActive
+                  ? "border-rose-400 bg-rose-50 text-rose-700 hover:bg-rose-100 dark:border-rose-500/70 dark:bg-rose-500/20 dark:text-rose-100"
+                  : "border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800",
+              ].join(" ")}
+            >
+              {favoriteActive ? "Remove from favorites" : "Add to favorites"}
+            </button>
           </div>
         </div>
       </div>

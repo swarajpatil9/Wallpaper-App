@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import RouteFallback from "./components/common/RouteFallback";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -56,7 +57,19 @@ function App() {
       >
         <Suspense fallback={<RouteFallback />}>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/"
+              element={
+                <>
+                  <SignedOut>
+                    <Navigate to="/sign-in" replace />
+                  </SignedOut>
+                  <SignedIn>
+                    <HomePage />
+                  </SignedIn>
+                </>
+              }
+            />
             <Route path="/discover/:categorySlug" element={<HomePage />} />
             <Route path="/topics/:tagSlug" element={<HomePage />} />
             <Route path="/sign-in/*" element={<SignInPage />} />
