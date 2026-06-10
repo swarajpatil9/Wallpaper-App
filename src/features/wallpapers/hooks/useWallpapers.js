@@ -66,18 +66,42 @@ function useWallpapers({ seedQuery = "", perPage = 24 } = {}) {
   }, [normalizedQuery, perPage, requestKey]);
 
   const wallpapers = useMemo(() => {
-    let nextWallpapers = [...allWallpapers];
+    const nextWallpapers = [...allWallpapers];
 
-    if (sort === "photographer-asc") {
-      nextWallpapers.sort((a, b) =>
-        (a.photographer || "").localeCompare(b.photographer || ""),
-      );
+    if (sort === "resolution-high") {
+      nextWallpapers.sort((a, b) => {
+        const aPixels = (a.width || 0) * (a.height || 0);
+        const bPixels = (b.width || 0) * (b.height || 0);
+
+        return bPixels - aPixels;
+      });
     }
 
-    if (sort === "photographer-desc") {
-      nextWallpapers.sort((a, b) =>
-        (b.photographer || "").localeCompare(a.photographer || ""),
-      );
+    if (sort === "resolution-low") {
+      nextWallpapers.sort((a, b) => {
+        const aPixels = (a.width || 0) * (a.height || 0);
+        const bPixels = (b.width || 0) * (b.height || 0);
+
+        return aPixels - bPixels;
+      });
+    }
+
+    if (sort === "landscape") {
+      nextWallpapers.sort((a, b) => {
+        const aLandscape = (a.width || 0) - (a.height || 0);
+        const bLandscape = (b.width || 0) - (b.height || 0);
+
+        return bLandscape - aLandscape;
+      });
+    }
+
+    if (sort === "portrait") {
+      nextWallpapers.sort((a, b) => {
+        const aPortrait = (a.height || 0) - (a.width || 0);
+        const bPortrait = (b.height || 0) - (b.width || 0);
+
+        return bPortrait - aPortrait;
+      });
     }
 
     return nextWallpapers;

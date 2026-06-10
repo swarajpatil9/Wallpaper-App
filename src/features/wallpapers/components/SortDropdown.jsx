@@ -4,11 +4,13 @@ function SortDropdown({ value, onChange }) {
       value={value}
       onChange={(event) => onChange(event.target.value)}
       aria-label="Sort wallpapers"
-      className="rounded-xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500"
+      className="rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm font-medium text-zinc-900 outline-none transition focus:border-zinc-500"
     >
-      <option value="curated">Curated</option>
-      <option value="photographer-asc">Photographer A-Z</option>
-      <option value="photographer-desc">Photographer Z-A</option>
+      <option value="featured">Featured</option>
+      <option value="resolution-high">Highest Resolution</option>
+      <option value="resolution-low">Lowest Resolution</option>
+      <option value="landscape">Landscape First</option>
+      <option value="portrait">Portrait First</option>
     </select>
   );
 }
